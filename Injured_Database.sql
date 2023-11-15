@@ -228,3 +228,22 @@ EXEC sp_rename 'daniel.PoliceRecords.CaseID', 'officer_id', 'COLUMN';
 
 
 
+-- Create Trigger to Delete Corresponding Data in HospitalRecords upon Officer relieved of his duty
+CREATE TRIGGER DeleteHospitalRecords ON [daniel].[PoliceRecords] 
+AFTER 
+  DELETE AS BEGIN 
+DELETE FROM 
+  daniel.HospitalRecords 
+WHERE 
+  reporting_officer_id IN (
+    SELECT 
+      CaseID 
+    FROM 
+      DELETED
+  );
+END;
+
+-- Trigger Usage Example
+DELETE FROM [daniel].[PoliceRecords] WHERE Badge_Number = '1234';
+
+
