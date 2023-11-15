@@ -221,14 +221,10 @@ VALUES
   (
     '5067', 'Richard', 'Kelly', 20, 'Protecting the public from harm'
   );
-select 
-  h.victim_name, 
-  h.suspect_name, 
-  h.[location] 
-from 
-  daniel.HospitalRecords as h 
-  left JOIN daniel.PoliceRecords as p on h.reporting_officer_id = p.CaseID 
-where 
-  h.[location] = 'Pine Street'
+
+
+-- Renames the CASE_ID column to officer_id in the PoliceRecords table.
+EXEC sp_rename 'daniel.PoliceRecords.CaseID', 'officer_id', 'COLUMN';
+
 
 
